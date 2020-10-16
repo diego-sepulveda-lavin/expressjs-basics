@@ -11,6 +11,7 @@ const rootDir = require('./util/path');
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(rootDir, 'public')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
