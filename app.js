@@ -1,26 +1,31 @@
+// import built-in libraries
 const path = require('path');
 
+// import installed libraries
 const express = require('express');
 const bodyParser = require('body-parser');
-//const expressHbs = require('express-handlebars');
 
+// import router routes
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+// import controllers
+const errorController = require('./controllers/error');
+
+//import other tools
+const rootDir = require('./util/path');
+
+// create express app
 const app = express();
 
-//app.engine('hbs', expressHbs({ layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs' }));
-//app.set('view engine', 'hbs');
-
-//app.set('view engine', 'pug');
-
+// engine template configuration
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
-const rootDir = require('./util/path');
-const errorController = require('./controllers/error');
-
+// setting port
 const port = 3000;
 
+// Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 
@@ -29,6 +34,7 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+// app listening
 app.listen(port, () => {
   console.log(`Server up and running at http://localhost:${port}`);
 });
