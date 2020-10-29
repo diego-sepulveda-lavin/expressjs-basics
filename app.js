@@ -15,6 +15,10 @@ const errorController = require('./controllers/error');
 // import database
 const sequelize = require('./util/database');
 
+//import models
+const Product = require('./models/product');
+const User = require('./models/user');
+
 //import other tools
 const rootDir = require('./util/path');
 
@@ -37,8 +41,11 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
 sequelize
-  .sync()
+  .sync({ force: true }) // only use on development, will cause to overwrite the tables
   .then((result) => {
     //console.log(result);
     // app listening
