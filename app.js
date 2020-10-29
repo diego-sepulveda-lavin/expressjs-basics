@@ -12,6 +12,9 @@ const shopRoutes = require('./routes/shop');
 // import controllers
 const errorController = require('./controllers/error');
 
+// import database
+const sequelize = require('./util/database');
+
 //import other tools
 const rootDir = require('./util/path');
 
@@ -34,7 +37,15 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-// app listening
-app.listen(port, () => {
-  console.log(`Server up and running at http://localhost:${port}`);
-});
+sequelize
+  .sync()
+  .then((result) => {
+    //console.log(result);
+    // app listening
+    app.listen(port, () => {
+      console.log(`Server up and running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
